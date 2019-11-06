@@ -9,7 +9,7 @@ Finds stats of League of Legends player via op.gg and bs4.
 # Find the line of HTML code with given tag and class.
 def tag_content_str(tag_name, class_code):
     tag_content = str(page_content.find(tag_name, attrs={'class': class_code}))
-
+    # print(tag_content)
     indices = tag_start_end(tag_content)
     res = tag_content[
           indices[0]:indices[1]
@@ -29,7 +29,7 @@ def tag_start_end(content):
 
 if __name__ == '__main__':
     while True:
-        username = input("League username (case-sensitive): ")
+        username = input("League username: ")
         print("*****\nSearching...")
         url = f"https://na.op.gg/summoner/userName={username}"
         page_html = urlopen(url)
@@ -46,6 +46,10 @@ if __name__ == '__main__':
         lad_rank = tag_content_str('span', 'ranking')
         if lad_rank == "Non":
             lad_rank = "Unranked"
+        # Kill:Death ratio.
+        kd = tag_content_str('span', 'KDARatio')
+        wins = tag_content_str('span', 'win')
+        losses = tag_content_str('span', 'lose')
 
         # Format.
         print("Finished.\n"
@@ -55,4 +59,6 @@ if __name__ == '__main__':
               f"--------\n"
               f"LADDER RANK: {lad_rank}\n"
               f"SOLO Q RANK: {rank}\n"
+              f"KILL/DEATH: {kd}\n"
+              f"WIN/LOSS: {wins}:{losses}\n"
               f"FAVOURITE CHAMP: {main_champ}\n")
