@@ -27,7 +27,6 @@ def tag_start_end(content):
     return start, end
 
 
-# Main loop.
 if __name__ == '__main__':
     while True:
         username = input("League username (case-sensitive): ")
@@ -37,16 +36,16 @@ if __name__ == '__main__':
         page_content = BeautifulSoup(page_html, features="html.parser")
 
         # RETRIEVE INFO -----
-        # Rank can be simply obtained with the functions defined above.
+        # Info can be simply obtained with the functions defined above.
         rank = tag_content_str('div', 'TierRank')
-        main = tag_content_str('div', 'ChampionName')
+        main_champ = tag_content_str('div', 'ChampionName')
+        # Since the ChampionName class has another layer of code within, we extract the range in which
+        # the champion name exists and strips the result of whitespace.
+        main_champ = main_champ[tag_start_end(main_champ)[0]: tag_start_end(main_champ)[1]].strip()
+        # Change a "Non" rank into "Unranked".
         lad_rank = tag_content_str('span', 'ranking')
         if lad_rank == "Non":
             lad_rank = "Unranked"
-
-        # Since the ChampionName class has another layer of code, we extract the range in which
-        # the champion name exists and strips the result of whitespace.
-        main = main[tag_start_end(main)[0]: tag_start_end(main)[1]].strip()
 
         # Format.
         print("Finished.\n"
@@ -56,4 +55,4 @@ if __name__ == '__main__':
               f"--------\n"
               f"LADDER RANK: {lad_rank}\n"
               f"SOLO Q RANK: {rank}\n"
-              f"FAVOURITE CHAMP: {main}\n")
+              f"FAVOURITE CHAMP: {main_champ}\n")
