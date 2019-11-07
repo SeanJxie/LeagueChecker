@@ -29,9 +29,11 @@ def tag_start_end(content):
 
 if __name__ == '__main__':
     while True:
-        username = input("League username: ")
+        # d_username is used for printing. f_username is used for URL.
+        d_username = input("League username: ")
+        f_username = d_username.replace(' ', '+', -1)
         print("*****\nSearching...")
-        url = f"https://op.gg/summoner/userName={username}"
+        url = f"https://op.gg/summoner/userName={f_username}"
         page_html = urlopen(url)
         page_content = BeautifulSoup(page_html, features="html.parser")
 
@@ -64,7 +66,7 @@ if __name__ == '__main__':
         print("Finished.\n"
               "*****\n")
 
-        print(f"{username}\n"
+        print(f"{d_username}\n"
               f"--------\n"
               f"LADDER RANK: {lad_rank}\n"
               f"SOLO Q RANK: {rank}\n"
