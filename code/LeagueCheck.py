@@ -18,7 +18,7 @@ def tag_content_str(tag_name, class_code):
     return res
 
 
-# Finds content wanted since HTML formats like this: <TAG>CONTENT</TAG>.
+# Finds content wanted since HTML formats something like this: <TAG>CONTENT</TAG>.
 def tag_start_end(content):
     # Finding the range in which the wanted content lies ie >CONTENT<.
     start = content.find(">") + 1
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     while True:
         username = input("League username: ")
         print("*****\nSearching...")
-        url = f"https://na.op.gg/summoner/userName={username}"
+        url = f"https://op.gg/summoner/userName={username}"
         page_html = urlopen(url)
         page_content = BeautifulSoup(page_html, features="html.parser")
 
@@ -42,14 +42,23 @@ if __name__ == '__main__':
         # Since the ChampionName class has another layer of code within, we extract the range in which
         # the champion name exists and strips the result of whitespace.
         main_champ = main_champ[tag_start_end(main_champ)[0]: tag_start_end(main_champ)[1]].strip()
+        # Change "No" to "None" when there is no champion data.
+        if main_champ == "No":
+            main_champ = "None"
+
         # Change a "Non" rank into "Unranked".
         lad_rank = tag_content_str('span', 'ranking')
         if lad_rank == "Non":
             lad_rank = "Unranked"
         # Kill:Death ratio.
-        kd = tag_content_str('span', 'KDARatio')
+        kda = tag_content_str('span', 'KDARatio')
         wins = tag_content_str('span', 'win')
         losses = tag_content_str('span', 'lose')
+
+        # Change "Non" to "None" when there is no win/loss.
+        if wins == 'Non':
+            wins = "None"
+            losses = "None"
 
         # Format.
         print("Finished.\n"
@@ -59,6 +68,6 @@ if __name__ == '__main__':
               f"--------\n"
               f"LADDER RANK: {lad_rank}\n"
               f"SOLO Q RANK: {rank}\n"
-              f"KILL/DEATH: {kd}\n"
+              f"KILL/DEATH: {kda}\n"
               f"WIN/LOSS: {wins}:{losses}\n"
               f"FAVOURITE CHAMP: {main_champ}\n")
