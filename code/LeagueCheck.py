@@ -54,11 +54,14 @@ if __name__ == '__main__':
             lad_rank = "Unranked"
         # Kill:Death ratio.
         kda = tag_content_str('span', 'KDARatio')
+        if kda == "Non":
+            kda = "None"
+
         wins = tag_content_str('span', 'win')
         losses = tag_content_str('span', 'lose')
 
         # Change "Non" to "None" when there is no win/loss.
-        if wins == 'Non':
+        if wins == "Non":
             wins = "None"
             losses = "None"
 
