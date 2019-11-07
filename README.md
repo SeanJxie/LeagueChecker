@@ -1,5 +1,5 @@
 # LeagueChecker
-By scraping https://na.op.gg/, the program retrieves information about a player via their user name.
+By scraping https://op.gg/, the program retrieves information about a player via their user name.
 
 - I'll always be working on this as the project is ment to improve my web scrape programming.
 
