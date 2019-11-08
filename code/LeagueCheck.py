@@ -33,6 +33,8 @@ if __name__ == '__main__':
         d_username = input("League username: ")
         f_username = d_username.replace(' ', '+', -1)
         print("*****\nSearching...")
+
+        # Getting page content based on user name.
         url = f"https://op.gg/summoner/userName={f_username}"
         page_html = urlopen(url)
         page_content = BeautifulSoup(page_html, features="html.parser")
@@ -41,9 +43,11 @@ if __name__ == '__main__':
         # Info can be simply obtained with the functions defined above.
         rank = tag_content_str('div', 'TierRank')
         main_champ = tag_content_str('div', 'ChampionName')
+
         # Since the ChampionName class has another layer of code within, we extract the range in which
         # the champion name exists and strips the result of whitespace.
         main_champ = main_champ[tag_start_end(main_champ)[0]: tag_start_end(main_champ)[1]].strip()
+
         # Change "No" to "None" when there is no champion data.
         if main_champ == "No":
             main_champ = "None"
@@ -52,6 +56,7 @@ if __name__ == '__main__':
         lad_rank = tag_content_str('span', 'ranking')
         if lad_rank == "Non":
             lad_rank = "Unranked"
+
         # Kill:Death ratio.
         kda = tag_content_str('span', 'KDARatio')
         if kda == "Non":
