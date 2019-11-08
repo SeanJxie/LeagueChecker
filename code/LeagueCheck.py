@@ -70,6 +70,8 @@ if __name__ == '__main__':
             wins = "None"
             losses = "None"
 
+        kda_l = tag_content_str('span', 'KDA')
+        
         # Format.
         print("Finished.\n"
               "*****\n")
@@ -78,6 +80,7 @@ if __name__ == '__main__':
               f"--------\n"
               f"LADDER RANK: {lad_rank}\n"
               f"SOLO Q RANK: {rank}\n"
-              f"KILL/DEATH: {kda}\n"
+              f"KILL/DEATH (TOTAL): {kda}\n"
+              f"KILL/DEATH (LAST GAME): {kda_l}\n"
               f"WIN/LOSS: {wins}:{losses}\n"
               f"FAVOURITE CHAMP: {main_champ}\n")
