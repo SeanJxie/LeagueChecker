@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import pymsgbox as pmb
 
 """
 Finds stats of League of Legends player via op.gg and bs4.
@@ -30,9 +31,14 @@ def tag_start_end(content):
 if __name__ == '__main__':
     while True:
         # d_username is used for printing. f_username is used for URL.
-        d_username = input("League username: ")
-        f_username = d_username.replace(' ', '+', -1)
-        print("*****\nSearching...")
+        d_username = pmb.prompt("Enter League of Legends username below.", "LeagueChecker")
+
+        # If the player exits, don't crash b/c of Attribute error.
+        try:
+            f_username = d_username.replace(' ', '+', -1)
+
+        except AttributeError:
+            break
 
         # Getting page content based on user name.
         url = f"https://op.gg/summoner/userName={f_username}"
@@ -71,16 +77,16 @@ if __name__ == '__main__':
             losses = "None"
 
         kda_l = tag_content_str('span', 'KDA')
-        
-        # Format.
-        print("Finished.\n"
-              "*****\n")
 
-        print(f"{d_username}\n"
-              f"--------\n"
-              f"LADDER RANK: {lad_rank}\n"
-              f"SOLO Q RANK: {rank}\n"
-              f"KILL/DEATH (TOTAL): {kda}\n"
-              f"KILL/DEATH (LAST GAME): {kda_l}\n"
-              f"WIN/LOSS: {wins}:{losses}\n"
-              f"FAVOURITE CHAMP: {main_champ}\n")
+        confirm = pmb.confirm(f"{d_username}\n"
+                              f"--------\n"
+                              f"LADDER RANK: {lad_rank}\n"
+                              f"SOLO Q RANK: {rank}\n"
+                              f"KILL/DEATH (TOTAL): {kda}\n"
+                              f"KILL/DEATH (LAST GAME): {kda_l}\n"
+                              f"WIN/LOSS: {wins}:{losses}\n"
+                              f"FAVOURITE CHAMP: {main_champ}\n", "LeagueChecker", ["Another username", "exit"])
+
+        if confirm == "exit":
+            break
+
